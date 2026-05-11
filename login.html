@@ -1,39 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSync - Login</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 320px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2c7be5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #1a5fd0;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #2c7be5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="loginUser()">Login</button>
+
+    <div class="register-link">
+        Don't have an account? <a href="register.html">Register</a>
+    </div>
+</div>
+
 <script>
 function loginUser() {
-    let typedUsername = document.getElementById('username').value.trim();
-    let typedPassword = document.getElementById('password').value;
+    let user = document.getElementById("username").value.trim();
+    let pass = document.getElementById("password").value.trim();
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    console.log("Users in system:", users);
-
-    if (users.length === 0) {
-        alert("❌ No accounts found. Please register first.");
-        window.location.href = "register.html";
+    if (user === "" || pass === "") {
+        alert("Please fill all fields");
         return;
     }
 
-    let match = users.find(user =>
-        user.username === typedUsername &&
-        user.password === typedPassword
-    );
+    // get stored users
+    let users = JSON.parse(localStorage.getItem("roomsync_users")) || [];
 
-    if (match) {
-        alert("✅ Login successful! Welcome " + typedUsername);
+    // find matching user
+    let foundUser = users.find(u => u.username === user && u.password === pass);
 
-        localStorage.setItem("loggedInUser", typedUsername);
-
-        window.location.href = "dashboard.html";
-        return true;
-    } else {
-        alert("❌ Incorrect username or password");
-        return false;
+    if (!foundUser) {
+        alert("❌ No account found or wrong password!");
+        return;
     }
-}
 
-// Optional: debug helper
-window.onload = function() {
-    console.log("Login page loaded");
-    console.log("Stored users:", JSON.parse(localStorage.getItem("users")));
-};
+    alert("Login successful!");
+
+    // save session
+    localStorage.setItem("roomsync_loggedIn", JSON.stringify(foundUser));
+
+    // redirect to dashboard (change if needed)
+    window.location.href = "dashboard.html";
+}
 </script>
+
+</body>
+</html>
