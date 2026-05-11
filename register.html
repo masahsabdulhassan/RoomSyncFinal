@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- RoomSync Registration Form with Confirm Password -->
     <div class="register-container">
         <h1>RoomSync</h1>
         <p>Create your account</p>
@@ -22,7 +21,7 @@
             <input type="password" id="password" placeholder="Password" required>
             <br><br>
 
-            <!-- ✅ NEW CONFIRM PASSWORD BOX (added as requested) -->
+            <!-- Confirm Password Box -->
             <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
             <br><br>
 
@@ -47,6 +46,11 @@
             <!-- Submit Button -->
             <button type="submit" class="btn">Create Account</button>
         </form>
+        
+        <!-- Link to login page if they already have an account -->
+        <p style="text-align: center; margin-top: 20px;">
+            Already have an account? <a href="login.html">Login here</a>
+        </p>
     </div>
 
     <script>
@@ -59,31 +63,54 @@
             const location = document.getElementById('location').value.trim();
             const cleanliness = document.getElementById('cleanliness').value;
 
-            // Validation: Check if passwords match
+            // Check if passwords match
             if (password !== confirmPassword) {
                 alert("❌ Passwords do not match! Please re-enter your password.");
-                return false;  // Prevents form submission
+                return false;
             }
 
-            // Optional: Check if password is at least 6 characters (good practice)
+            // Check password length
             if (password.length < 6) {
                 alert("⚠️ Password must be at least 6 characters long.");
                 return false;
             }
 
-            // Optional: Check if budget is a positive number
+            // Check budget
             if (budget <= 0) {
                 alert("💰 Please enter a valid monthly budget.");
                 return false;
             }
 
-            // If all validations pass, show success message
-            alert(`✅ Welcome to RoomSync, ${username}!\n\n📋 Account Details:\n• Budget: $${budget}\n• Location: ${location}\n• Cleanliness: ${cleanliness}\n\nYour account has been created successfully!`);
+            // Check cleanliness selected
+            if (cleanliness === "") {
+                alert("🧼 Please select your cleanliness level.");
+                return false;
+            }
 
-            // You can replace the alert above with actual form submission logic:
-            // For example: document.forms[0].submit();
+            // ✅ SAVE USER DATA to localStorage (connects with login page)
+            const userData = {
+                username: username,
+                password: password,  // In real app, hash this!
+                budget: budget,
+                location: location,
+                cleanliness: cleanliness,
+                registeredAt: new Date().toISOString()
+            };
+
+            // Store user in localStorage
+            localStorage.setItem('roomsync_user', JSON.stringify(userData));
             
-            return true;  // Allows form submission (if you have a backend)
+            // Optional: Store just credentials for quick login check
+            localStorage.setItem('roomsync_username', username);
+            localStorage.setItem('roomsync_password', password);
+
+            // Show success message
+            alert(`✅ Welcome to RoomSync, ${username}!\n\nYour account has been created successfully!\n\nYou will now be redirected to the login page.`);
+
+            // ✅ REDIRECT TO LOGIN PAGE (connects your pages!)
+            window.location.href = "login.html";
+            
+            return false; // Prevent actual form submission since we're redirecting
         }
     </script>
 
