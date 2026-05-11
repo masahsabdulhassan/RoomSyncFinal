@@ -1,32 +1,35 @@
 // =======================
-// REGISTER USER
+// REGISTER
 // =======================
 function registerUser() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-    if (user.trim() === "" || pass.trim() === "") {
-        alert("Please fill all fields");
+    if (!username || !password) {
+        alert("Please enter username and password");
         return false;
     }
 
+    // Get existing users
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    let exists = users.find(u => u.username === user);
+    // Check if user exists
+    let exists = users.find(u => u.username === username);
 
     if (exists) {
-        alert("Username already exists");
+        alert("Username already taken");
         return false;
     }
 
+    // Save new user
     users.push({
-        username: user,
-        password: pass
+        username: username,
+        password: password
     });
 
     localStorage.setItem("users", JSON.stringify(users));
 
-    alert("Account created!");
+    alert("Account created! Please log in.");
     window.location.href = "login.html";
 
     return false;
@@ -34,27 +37,27 @@ function registerUser() {
 
 
 // =======================
-// LOGIN USER
+// LOGIN
 // =======================
 function loginUser() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-    if (user.trim() === "" || pass.trim() === "") {
-        alert("Please fill all fields");
+    if (!username || !password) {
+        alert("Please enter username and password");
         return false;
     }
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    let validUser = users.find(u => u.username === user && u.password === pass);
+    let match = users.find(u => u.username === username && u.password === password);
 
-    if (validUser) {
-        localStorage.setItem("loggedInUser", user);
+    if (match) {
+        localStorage.setItem("loggedInUser", username);
         alert("Login successful!");
         window.location.href = "dashboard.html";
     } else {
-        alert("Invalid username or password");
+        alert("Incorrect username or password");
     }
 
     return false;
@@ -62,7 +65,7 @@ function loginUser() {
 
 
 // =======================
-// CHECK LOGIN (Dashboard Protection)
+// DASHBOARD CHECK
 // =======================
 function checkLogin() {
     let user = localStorage.getItem("loggedInUser");
@@ -74,26 +77,6 @@ function checkLogin() {
     }
 
     document.getElementById("welcomeUser").innerText = "Welcome, " + user;
-
-    loadDashboardData(user);
-}
-
-
-// =======================
-// DASHBOARD DATA
-// =======================
-function loadDashboardData(user) {
-    let matches = [
-        "Alex - High Match",
-        "Taylor - Medium Match",
-        "Jordan - Low Match"
-    ];
-
-    document.getElementById("matches").innerHTML =
-        matches.map(m => `<p>${m}</p>`).join("");
-
-    document.getElementById("tipText").innerText =
-        "Keep your profile updated for better roommate matches!";
 }
 
 
@@ -103,23 +86,4 @@ function loadDashboardData(user) {
 function logoutUser() {
     localStorage.removeItem("loggedInUser");
     window.location.href = "login.html";
-}
-
-
-// =======================
-// SEARCH FILTER
-// =======================
-function filterUsers() {
-    let filter = document.getElementById("filter").value;
-    let users = document.querySelectorAll(".user");
-
-    users.forEach(user => {
-        let cleanLevel = user.dataset.clean;
-
-        if (filter === "all" || cleanLevel === filter) {
-            user.style.display = "block";
-        } else {
-            user.style.display = "none";
-        }
-    });
 }
