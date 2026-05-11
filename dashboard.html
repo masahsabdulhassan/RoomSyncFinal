@@ -7,21 +7,26 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body onload="checkLogin()">
 
   <!-- NAVIGATION -->
   <nav>
-    <a href="index.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="search.html">Search</a>
+    <h1>RoomSync</h1>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="search.html">Search</a>
+    </div>
   </nav>
 
-  <!-- DASHBOARD CONTENT -->
-  <h1>Welcome to RoomSync</h1>
+  <!-- WELCOME USER (dynamic) -->
+  <h1 id="welcomeUser">Welcome</h1>
 
   <p>Your roommate matching dashboard</p>
+
+  <button onclick="logoutUser()" class="btn">Logout</button>
 
   <div class="dashboard-grid">
 
@@ -44,5 +49,6 @@
 
   </div>
 
+  <script src="script.js"></script>
 </body>
 </html>
