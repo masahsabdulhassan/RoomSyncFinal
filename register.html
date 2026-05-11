@@ -13,27 +13,21 @@
         <p>Create your account</p>
 
         <form onsubmit="return registerUser()">
-            <!-- Username -->
             <input type="text" id="username" placeholder="Username" required>
             <br><br>
 
-            <!-- Password -->
             <input type="password" id="password" placeholder="Password" required>
             <br><br>
 
-            <!-- Confirm Password Box -->
             <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
             <br><br>
 
-            <!-- Budget -->
             <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
             <br><br>
 
-            <!-- Location -->
             <input type="text" id="location" placeholder="Preferred Location" required>
             <br><br>
 
-            <!-- Cleanliness Level -->
             <label for="cleanliness">Cleanliness Level:</label>
             <select id="cleanliness" required>
                 <option value="">Select</option>
@@ -43,11 +37,9 @@
             </select>
             <br><br>
 
-            <!-- Submit Button -->
             <button type="submit" class="btn">Create Account</button>
         </form>
         
-        <!-- Link to login page if they already have an account -->
         <p style="text-align: center; margin-top: 20px;">
             Already have an account? <a href="login.html">Login here</a>
         </p>
@@ -63,56 +55,46 @@
             const location = document.getElementById('location').value.trim();
             const cleanliness = document.getElementById('cleanliness').value;
 
-            // Check if passwords match
+            // Validation
             if (password !== confirmPassword) {
-                alert("❌ Passwords do not match! Please re-enter your password.");
+                alert("❌ Passwords do not match!");
                 return false;
             }
 
-            // Check password length
             if (password.length < 6) {
-                alert("⚠️ Password must be at least 6 characters long.");
+                alert("⚠️ Password must be at least 6 characters.");
                 return false;
             }
 
-            // Check budget
             if (budget <= 0) {
-                alert("💰 Please enter a valid monthly budget.");
+                alert("💰 Please enter a valid budget.");
                 return false;
             }
 
-            // Check cleanliness selected
             if (cleanliness === "") {
-                alert("🧼 Please select your cleanliness level.");
+                alert("🧼 Please select cleanliness level.");
                 return false;
             }
 
-            // ✅ SAVE USER DATA to localStorage (connects with login page)
-            const userData = {
+            // Create user object
+            const user = {
                 username: username,
-                password: password,  // In real app, hash this!
+                password: password,
                 budget: budget,
                 location: location,
-                cleanliness: cleanliness,
-                registeredAt: new Date().toISOString()
+                cleanliness: cleanliness
             };
 
-            // Store user in localStorage
-            localStorage.setItem('roomsync_user', JSON.stringify(userData));
+            // Save to localStorage
+            localStorage.setItem("roomsync_user", JSON.stringify(user));
             
-            // Optional: Store just credentials for quick login check
-            localStorage.setItem('roomsync_username', username);
-            localStorage.setItem('roomsync_password', password);
-
-            // Show success message
-            alert(`✅ Welcome to RoomSync, ${username}!\n\nYour account has been created successfully!\n\nYou will now be redirected to the login page.`);
-
-            // ✅ REDIRECT TO LOGIN PAGE (connects your pages!)
+            console.log("✅ User saved:", user);
+            alert(`✅ Account created for ${username}!\n\nRedirecting to login...`);
+            
+            // Redirect to login
             window.location.href = "login.html";
-            
-            return false; // Prevent actual form submission since we're redirecting
+            return false;
         }
     </script>
-
 </body>
 </html>
