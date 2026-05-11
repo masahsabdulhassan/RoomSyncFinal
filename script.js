@@ -40,17 +40,23 @@ function registerUser() {
 // LOGIN
 // =======================
 function loginUser() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
 
     if (!username || !password) {
-        alert("Please enter username and password");
+        alert("Please fill out all fields");
         return false;
     }
 
+    // Get stored users
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    let match = users.find(u => u.username === username && u.password === password);
+    console.log("Users in system:", users); // debugging
+
+    // Find match
+    let match = users.find(u => 
+        u.username === username && u.password === password
+    );
 
     if (match) {
         localStorage.setItem("loggedInUser", username);
@@ -62,7 +68,6 @@ function loginUser() {
 
     return false;
 }
-
 
 // =======================
 // DASHBOARD CHECK
