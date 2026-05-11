@@ -12,14 +12,12 @@
     <h1>RoomSync</h1>
     <p>Login to your account</p>
     
-    <div id="errorMessage" style="color: red; text-align: center; margin-bottom: 15px; display: none;"></div>
-    
-    <form id="loginForm" onsubmit="return loginUser()">
+    <form id="loginForm">
         <input type="text" id="username" placeholder="Username" required>
         <br><br>
         <input type="password" id="password" placeholder="Password" required>
         <br><br>
-        <button type="submit" class="btn">Login</button>
+        <button type="button" class="btn" onclick="loginUser()">Login</button>
     </form>
     
     <p style="text-align: center; margin-top: 20px;">
@@ -29,36 +27,48 @@
 
 <script>
 function loginUser() {
-    // Get values from the form
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
+    // Get what user typed
+    let typedUsername = document.getElementById('username').value;
+    let typedPassword = document.getElementById('password').value;
     
-    // Get saved registration data
-    let savedUsername = localStorage.getItem('reg_username');
-    let savedPassword = localStorage.getItem('reg_password');
+    // Get saved data from registration
+    let savedUsername = localStorage.getItem('roomsync_username');
+    let savedPassword = localStorage.getItem('roomsync_password');
     
-    // Debug: See what's saved (check console with F12)
-    console.log("=== LOGIN DEBUG ===");
-    console.log("You entered:", username, password);
-    console.log("Saved username:", savedUsername);
-    console.log("Saved password:", savedPassword);
+    // Debug - Show in console (press F12 to see)
+    console.log("=== LOGIN ATTEMPT ===");
+    console.log("You typed - Username:", typedUsername, "Password:", typedPassword);
+    console.log("Saved - Username:", savedUsername, "Password:", savedPassword);
     
     // Check if any account exists
     if (!savedUsername) {
         alert("❌ No account found! Please register first.");
         window.location.href = "register.html";
-        return false;
+        return;
     }
     
     // Check if credentials match
-    if (username === savedUsername && password === savedPassword) {
-        alert("✅ Login successful! Welcome " + username);
-        // You can redirect to your dashboard/homepage
+    if (typedUsername === savedUsername && typedPassword === savedPassword) {
+        alert("✅ Login successful! Welcome " + typedUsername + "!");
+        
+        // Optional: Save that user is logged in
+        localStorage.setItem('roomsync_logged_in', 'true');
+        
+        // You can change this to your dashboard page
         // window.location.href = "dashboard.html";
+        
         return true;
     } else {
         alert("❌ Wrong username or password!\n\nTry:\nUsername: " + savedUsername + "\nPassword: " + savedPassword);
         return false;
+    }
+}
+
+// Optional: Auto-fill the username if you registered recently
+window.onload = function() {
+    let savedUsername = localStorage.getItem('roomsync_username');
+    if (savedUsername) {
+        console.log("💡 Tip: Last registered user was: " + savedUsername);
     }
 }
 </script>
