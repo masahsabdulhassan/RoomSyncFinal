@@ -1,70 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoomSync - Register</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+function registerUser() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password")?.value || prompt("Create a password:");
+    let budget = document.getElementById("budget").value;
+    let location = document.getElementById("location").value;
+    let cleanliness = document.getElementById("cleanliness").value;
 
-<body>
+    if (!username || !password || !budget || !location || !cleanliness) {
+        alert("Please fill out all fields");
+        return false;
+    }
 
-<!-- NAVIGATION -->
-<nav>
-    <h1>RoomSync</h1>
-    <div>
-        <a href="index.html">Home</a>
-        <a href="login.html">Login</a>
-        <a href="register.html">Register</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="search.html">Search</a>
-    </div>
-</nav>
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-<!-- REGISTER SECTION -->
-<section class="auth-container">
+    let exists = users.find(u => u.username === username);
 
-    <h2>Create Account</h2>
-    <p>Set up your profile to start finding compatible roommates.</p>
+    if (exists) {
+        alert("Username already exists");
+        return false;
+    }
 
-    <form onsubmit="return registerUser()">
+    users.push({
+        username,
+        password,
+        budget,
+        location,
+        cleanliness
+    });
 
-        <input type="text" id="username" placeholder="Username" required>
-        <br><br>
+    localStorage.setItem("users", JSON.stringify(users));
 
-        <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
-        <br><br>
+    alert("Account created successfully!");
+    window.location.href = "login.html";
 
-        <input type="text" id="location" placeholder="Preferred Location" required>
-        <br><br>
-
-        <label for="cleanliness">Cleanliness Level:</label>
-        <select id="cleanliness" required>
-            <option value="">Select</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-        </select>
-
-        <br><br>
-
-        <button type="submit" class="btn">Create Account</button>
-
-    </form>
-
-    <p class="small-text">
-        Already have an account? <a href="login.html">Login here</a>
-    </p>
-
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <p>RoomSync © 2026 | Web Development Project</p>
-</footer>
-
-<!-- SCRIPT -->
-<script src="script.js"></script>
-
-</body>
-</html>
+    return false;
+}
