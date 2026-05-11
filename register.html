@@ -1,60 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSync - Register</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .register-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 320px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2c7be5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #1a5fd0;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #2c7be5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-container">
+    <h2>Create Account</h2>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="registerUser()">Register</button>
+
+    <div class="login-link">
+        Already have an account? <a href="login.html">Login</a>
+    </div>
+</div>
+
 <script>
 function registerUser() {
-    let username = document.getElementById('username').value.trim();
-    let password = document.getElementById('password').value;
-    let confirmPassword = document.getElementById('confirmPassword').value;
-    let budget = document.getElementById('budget').value;
-    let location = document.getElementById('location').value.trim();
-    let cleanliness = document.getElementById('cleanliness').value;
+    let user = document.getElementById("username").value.trim();
+    let pass = document.getElementById("password").value.trim();
 
-    // Validation
-    if (!username || !password || !confirmPassword || !budget || !location || !cleanliness) {
-        alert("Please fill out all fields!");
-        return false;
+    if (user === "" || pass === "") {
+        alert("Please fill all fields");
+        return;
     }
 
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return false;
-    }
+    // get existing users
+    let users = JSON.parse(localStorage.getItem("roomsync_users")) || [];
 
-    if (password.length < 4) {
-        alert("Password must be at least 4 characters!");
-        return false;
-    }
-
-    // Get existing users (IMPORTANT FIX)
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Check if username already exists
-    let exists = users.find(u => u.username === username);
-
+    // check if user exists
+    let exists = users.find(u => u.username === user);
     if (exists) {
-        alert("Username already taken!");
-        return false;
+        alert("Username already exists!");
+        return;
     }
 
-    // Create user object
-    let newUser = {
-        username,
-        password,
-        budget,
-        location,
-        cleanliness
-    };
+    // save new user
+    users.push({ username: user, password: pass });
+    localStorage.setItem("roomsync_users", JSON.stringify(users));
 
-    // Add to array
-    users.push(newUser);
-
-    // Save back to localStorage
-    localStorage.setItem("users", JSON.stringify(users));
-
-    console.log("Saved users:", users);
-
-    alert("Account created for: " + username);
-
+    alert("Account created successfully!");
     window.location.href = "login.html";
-
-    return false;
 }
 </script>
+
+</body>
+</html>
