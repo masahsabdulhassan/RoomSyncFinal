@@ -1,77 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoomSync - Login</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="login-container">
-    <h1>RoomSync</h1>
-    <p>Login to your account</p>
-    
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Username" required>
-        <br><br>
-        <input type="password" id="password" placeholder="Password" required>
-        <br><br>
-        <button type="button" class="btn" onclick="loginUser()">Login</button>
-    </form>
-    
-    <p style="text-align: center; margin-top: 20px;">
-        Don't have an account? <a href="register.html">Register here</a>
-    </p>
-</div>
-
 <script>
 function loginUser() {
-    // Get what user typed
-    let typedUsername = document.getElementById('username').value;
+    let typedUsername = document.getElementById('username').value.trim();
     let typedPassword = document.getElementById('password').value;
-    
-    // Get saved data from registration
-    let savedUsername = localStorage.getItem('roomsync_username');
-    let savedPassword = localStorage.getItem('roomsync_password');
-    
-    // Debug - Show in console (press F12 to see)
-    console.log("=== LOGIN ATTEMPT ===");
-    console.log("You typed - Username:", typedUsername, "Password:", typedPassword);
-    console.log("Saved - Username:", savedUsername, "Password:", savedPassword);
-    
-    // Check if any account exists
-    if (!savedUsername) {
-        alert("❌ No account found! Please register first.");
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    console.log("Users in system:", users);
+
+    if (users.length === 0) {
+        alert("❌ No accounts found. Please register first.");
         window.location.href = "register.html";
         return;
     }
-    
-    // Check if credentials match
-    if (typedUsername === savedUsername && typedPassword === savedPassword) {
-        alert("✅ Login successful! Welcome " + typedUsername + "!");
-        
-        // Optional: Save that user is logged in
-        localStorage.setItem('roomsync_logged_in', 'true');
-        
-        // You can change this to your dashboard page
-        // window.location.href = "dashboard.html";
-        
+
+    let match = users.find(user =>
+        user.username === typedUsername &&
+        user.password === typedPassword
+    );
+
+    if (match) {
+        alert("✅ Login successful! Welcome " + typedUsername);
+
+        localStorage.setItem("loggedInUser", typedUsername);
+
+        window.location.href = "dashboard.html";
         return true;
     } else {
-        alert("❌ Wrong username or password!\n\nTry:\nUsername: " + savedUsername + "\nPassword: " + savedPassword);
+        alert("❌ Incorrect username or password");
         return false;
     }
 }
 
-// Optional: Auto-fill the username if you registered recently
+// Optional: debug helper
 window.onload = function() {
-    let savedUsername = localStorage.getItem('roomsync_username');
-    if (savedUsername) {
-        console.log("💡 Tip: Last registered user was: " + savedUsername);
-    }
-}
+    console.log("Login page loaded");
+    console.log("Stored users:", JSON.parse(localStorage.getItem("users")));
+};
 </script>
-
-</body>
-</html>
