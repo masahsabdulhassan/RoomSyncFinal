@@ -1,27 +1,91 @@
-<form onsubmit="return registerUser()">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSync - Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <input type="text" id="username" placeholder="Username" required>
-    <br><br>
+    <!-- RoomSync Registration Form with Confirm Password -->
+    <div class="register-container">
+        <h1>RoomSync</h1>
+        <p>Create your account</p>
 
-    <input type="password" id="password" placeholder="Password" required>
-    <br><br>
+        <form onsubmit="return registerUser()">
+            <!-- Username -->
+            <input type="text" id="username" placeholder="Username" required>
+            <br><br>
 
-    <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
-    <br><br>
+            <!-- Password -->
+            <input type="password" id="password" placeholder="Password" required>
+            <br><br>
 
-    <input type="text" id="location" placeholder="Preferred Location" required>
-    <br><br>
+            <!-- ✅ NEW CONFIRM PASSWORD BOX (added as requested) -->
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <br><br>
 
-    <label for="cleanliness">Cleanliness Level:</label>
-    <select id="cleanliness" required>
-        <option value="">Select</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-    </select>
+            <!-- Budget -->
+            <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
+            <br><br>
 
-    <br><br>
+            <!-- Location -->
+            <input type="text" id="location" placeholder="Preferred Location" required>
+            <br><br>
 
-    <button type="submit" class="btn">Create Account</button>
+            <!-- Cleanliness Level -->
+            <label for="cleanliness">Cleanliness Level:</label>
+            <select id="cleanliness" required>
+                <option value="">Select</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <br><br>
 
-</form>
+            <!-- Submit Button -->
+            <button type="submit" class="btn">Create Account</button>
+        </form>
+    </div>
+
+    <script>
+        function registerUser() {
+            // Get form values
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const budget = document.getElementById('budget').value;
+            const location = document.getElementById('location').value.trim();
+            const cleanliness = document.getElementById('cleanliness').value;
+
+            // Validation: Check if passwords match
+            if (password !== confirmPassword) {
+                alert("❌ Passwords do not match! Please re-enter your password.");
+                return false;  // Prevents form submission
+            }
+
+            // Optional: Check if password is at least 6 characters (good practice)
+            if (password.length < 6) {
+                alert("⚠️ Password must be at least 6 characters long.");
+                return false;
+            }
+
+            // Optional: Check if budget is a positive number
+            if (budget <= 0) {
+                alert("💰 Please enter a valid monthly budget.");
+                return false;
+            }
+
+            // If all validations pass, show success message
+            alert(`✅ Welcome to RoomSync, ${username}!\n\n📋 Account Details:\n• Budget: $${budget}\n• Location: ${location}\n• Cleanliness: ${cleanliness}\n\nYour account has been created successfully!`);
+
+            // You can replace the alert above with actual form submission logic:
+            // For example: document.forms[0].submit();
+            
+            return true;  // Allows form submission (if you have a backend)
+        }
+    </script>
+
+</body>
+</html>
