@@ -1,93 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoomSync - Register</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="register-container">
-    <h1>RoomSync</h1>
-    <p>Create your account</p>
-    
-    <form id="registerForm">
-        <input type="text" id="username" placeholder="Username" required>
-        <br><br>
-        
-        <input type="password" id="password" placeholder="Password" required>
-        <br><br>
-        
-        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-        <br><br>
-        
-        <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
-        <br><br>
-        
-        <input type="text" id="location" placeholder="Preferred Location" required>
-        <br><br>
-        
-        <label for="cleanliness">Cleanliness Level:</label>
-        <select id="cleanliness" required>
-            <option value="">Select</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-        </select>
-        <br><br>
-        
-        <button type="button" class="btn" onclick="registerUser()">Create Account</button>
-    </form>
-    
-    <p style="text-align: center; margin-top: 20px;">
-        Already have an account? <a href="login.html">Login here</a>
-    </p>
-</div>
-
 <script>
 function registerUser() {
-    // Get all form values
-    let username = document.getElementById('username').value;
+    let username = document.getElementById('username').value.trim();
     let password = document.getElementById('password').value;
     let confirmPassword = document.getElementById('confirmPassword').value;
     let budget = document.getElementById('budget').value;
-    let location = document.getElementById('location').value;
+    let location = document.getElementById('location').value.trim();
     let cleanliness = document.getElementById('cleanliness').value;
-    
+
     // Validation
-    if (!username || !password || !budget || !location || !cleanliness) {
+    if (!username || !password || !confirmPassword || !budget || !location || !cleanliness) {
         alert("Please fill out all fields!");
-        return;
+        return false;
     }
-    
+
     if (password !== confirmPassword) {
         alert("Passwords do not match!");
-        return;
+        return false;
     }
-    
+
     if (password.length < 4) {
         alert("Password must be at least 4 characters!");
-        return;
+        return false;
     }
-    
-    // SAVE DATA - Using SIMPLE key names
-    localStorage.setItem('roomsync_username', username);
-    localStorage.setItem('roomsync_password', password);
-    localStorage.setItem('roomsync_budget', budget);
-    localStorage.setItem('roomsync_location', location);
-    localStorage.setItem('roomsync_cleanliness', cleanliness);
-    
-    // Confirm save was successful
-    let savedUser = localStorage.getItem('roomsync_username');
-    console.log("Saved username:", savedUser);
-    
-    alert("✅ Account created for: " + username + "!\n\nClick OK to login.");
-    
-    // Go to login page
+
+    // Get existing users (IMPORTANT FIX)
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if username already exists
+    let exists = users.find(u => u.username === username);
+
+    if (exists) {
+        alert("Username already taken!");
+        return false;
+    }
+
+    // Create user object
+    let newUser = {
+        username,
+        password,
+        budget,
+        location,
+        cleanliness
+    };
+
+    // Add to array
+    users.push(newUser);
+
+    // Save back to localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    console.log("Saved users:", users);
+
+    alert("Account created for: " + username);
+
     window.location.href = "login.html";
+
+    return false;
 }
 </script>
-
-</body>
-</html>
