@@ -1,36 +1,27 @@
-function registerUser() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password")?.value || prompt("Create a password:");
-    let budget = document.getElementById("budget").value;
-    let location = document.getElementById("location").value;
-    let cleanliness = document.getElementById("cleanliness").value;
+<form onsubmit="return registerUser()">
 
-    if (!username || !password || !budget || !location || !cleanliness) {
-        alert("Please fill out all fields");
-        return false;
-    }
+    <input type="text" id="username" placeholder="Username" required>
+    <br><br>
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    <input type="password" id="password" placeholder="Password" required>
+    <br><br>
 
-    let exists = users.find(u => u.username === username);
+    <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
+    <br><br>
 
-    if (exists) {
-        alert("Username already exists");
-        return false;
-    }
+    <input type="text" id="location" placeholder="Preferred Location" required>
+    <br><br>
 
-    users.push({
-        username,
-        password,
-        budget,
-        location,
-        cleanliness
-    });
+    <label for="cleanliness">Cleanliness Level:</label>
+    <select id="cleanliness" required>
+        <option value="">Select</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+    </select>
 
-    localStorage.setItem("users", JSON.stringify(users));
+    <br><br>
 
-    alert("Account created successfully!");
-    window.location.href = "login.html";
+    <button type="submit" class="btn">Create Account</button>
 
-    return false;
-}
+</form>
