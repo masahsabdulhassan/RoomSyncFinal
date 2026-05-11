@@ -48,24 +48,27 @@ function loginUser() {
         return false;
     }
 
-    // Get stored users
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let users = JSON.parse(localStorage.getItem("users"));
 
-    console.log("Users in system:", users); // debugging
-
-    // Find match
-    let match = users.find(u => 
-        u.username === username && u.password === password
-    );
-
-    if (match) {
-        localStorage.setItem("loggedInUser", username);
-        alert("Login successful!");
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Incorrect username or password");
+    // safety check
+    if (!Array.isArray(users)) {
+        users = [];
     }
 
+    console.log("Users loaded:", users);
+
+    for (let i = 0; i < users.length; i++) {
+        console.log("Checking:", users[i]);
+
+        if (users[i].username === username && users[i].password === password) {
+            localStorage.setItem("loggedInUser", username);
+            alert("Login successful!");
+            window.location.href = "dashboard.html";
+            return false;
+        }
+    }
+
+    alert("Incorrect username or password");
     return false;
 }
 
