@@ -1,39 +1,21 @@
 // =======================
 // REGISTER
 // =======================
-function registerUser() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
+console.log("REGISTER FUNCTION CALLED");
 
-    if (!username || !password) {
-        alert("Please enter username and password");
-        return false;
-    }
+let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Get existing users
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+users.push({
+    username,
+    password,
+    budget,
+    location,
+    cleanliness
+});
 
-    // Check if user exists
-    let exists = users.find(u => u.username === username);
+localStorage.setItem("users", JSON.stringify(users));
 
-    if (exists) {
-        alert("Username already taken");
-        return false;
-    }
-
-    // Save new user
-    users.push({
-        username: username,
-        password: password
-    });
-
-    localStorage.setItem("users", JSON.stringify(users));
-
-    alert("Account created! Please log in.");
-    window.location.href = "login.html";
-
-    return false;
-}
+console.log("SAVED USERS:", localStorage.getItem("users"));
 
 
 // =======================
