@@ -10,10 +10,8 @@ function registerUser() {
         return false;
     }
 
-    // Get existing users or create empty array
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Check if username already exists
     let exists = users.find(u => u.username === user);
 
     if (exists) {
@@ -21,7 +19,6 @@ function registerUser() {
         return false;
     }
 
-    // Add new user
     users.push({
         username: user,
         password: pass
@@ -53,11 +50,8 @@ function loginUser() {
     let validUser = users.find(u => u.username === user && u.password === pass);
 
     if (validUser) {
-        alert("Login successful!");
-
-        // Save session (logged-in user)
         localStorage.setItem("loggedInUser", user);
-
+        alert("Login successful!");
         window.location.href = "dashboard.html";
     } else {
         alert("Invalid username or password");
@@ -68,7 +62,43 @@ function loginUser() {
 
 
 // =======================
-// LOGOUT USER
+// CHECK LOGIN (Dashboard Protection)
+// =======================
+function checkLogin() {
+    let user = localStorage.getItem("loggedInUser");
+
+    if (!user) {
+        alert("You must log in first");
+        window.location.href = "login.html";
+        return;
+    }
+
+    document.getElementById("welcomeUser").innerText = "Welcome, " + user;
+
+    loadDashboardData(user);
+}
+
+
+// =======================
+// DASHBOARD DATA
+// =======================
+function loadDashboardData(user) {
+    let matches = [
+        "Alex - High Match",
+        "Taylor - Medium Match",
+        "Jordan - Low Match"
+    ];
+
+    document.getElementById("matches").innerHTML =
+        matches.map(m => `<p>${m}</p>`).join("");
+
+    document.getElementById("tipText").innerText =
+        "Keep your profile updated for better roommate matches!";
+}
+
+
+// =======================
+// LOGOUT
 // =======================
 function logoutUser() {
     localStorage.removeItem("loggedInUser");
@@ -77,22 +107,7 @@ function logoutUser() {
 
 
 // =======================
-// CHECK IF USER IS LOGGED IN (use on dashboard)
-// =======================
-function checkLogin() {
-    let user = localStorage.getItem("loggedInUser");
-
-    if (!user) {
-        alert("You must log in first");
-        window.location.href = "login.html";
-    } else {
-        document.getElementById("welcomeUser").innerText = "Welcome, " + user;
-    }
-}
-
-
-// =======================
-// SEARCH FILTER (your existing code improved slightly)
+// SEARCH FILTER
 // =======================
 function filterUsers() {
     let filter = document.getElementById("filter").value;
