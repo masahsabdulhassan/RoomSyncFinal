@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSync - Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- WIP BANNER -->
+<div class="wip-banner">
+    🚧 RoomSync Profile System (Prototype Version) 🚧
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+    <h1>RoomSync</h1>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="search.html">Search</a>
+    </div>
+</nav>
+
+<!-- REGISTER SECTION -->
+<section class="auth-container">
+
+    <h2>Create Account</h2>
+    <p>Set up your profile to start finding compatible roommates.</p>
+
+    <form onsubmit="return registerUser()">
+
+        <input type="text" id="username" placeholder="Username" required>
+        <br><br>
+
+        <input type="number" id="budget" placeholder="Monthly Budget ($)" required>
+        <br><br>
+
+        <input type="text" id="location" placeholder="Preferred Location" required>
+        <br><br>
+
+        <label for="cleanliness">Cleanliness Level:</label>
+        <select id="cleanliness" required>
+            <option value="">Select</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit" class="btn">Create Account</button>
+
+    </form>
+
+    <p class="small-text">
+        Already have an account? <a href="login.html">Login here</a>
+    </p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>RoomSync © 2026 | Web Development Project</p>
+</footer>
+
+<!-- SCRIPT -->
+<script src="script.js"></script>
+
+</body>
+</html>
