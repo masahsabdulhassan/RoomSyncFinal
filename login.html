@@ -6,52 +6,62 @@
     <title>RoomSync - Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- NAVIGATION -->
-<nav>
+<div class="login-container">
     <h1>RoomSync</h1>
-    <div>
-        <a href="index.html">Home</a>
-        <a href="login.html">Login</a>
-        <a href="register.html">Register</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="search.html">Search</a>
-    </div>
-</nav>
-
-<!-- LOGIN SECTION -->
-<section class="auth-container">
-
-    <h2>Login</h2>
-    <p>Welcome back! Please enter your details to continue.</p>
-
-    <form onsubmit="return loginUser()">
-
+    <p>Login to your account</p>
+    
+    <div id="errorMessage" style="color: red; text-align: center; margin-bottom: 15px; display: none;"></div>
+    
+    <form id="loginForm" onsubmit="return loginUser()">
         <input type="text" id="username" placeholder="Username" required>
         <br><br>
-
         <input type="password" id="password" placeholder="Password" required>
         <br><br>
-
         <button type="submit" class="btn">Login</button>
-
     </form>
-
-    <p class="small-text">
-        Don’t have an account? <a href="register.html">Register here</a>
+    
+    <p style="text-align: center; margin-top: 20px;">
+        Don't have an account? <a href="register.html">Register here</a>
     </p>
+</div>
 
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <p>RoomSync © 2026 | Web Development Project</p>
-</footer>
-
-<!-- SCRIPT (IMPORTANT) -->
-<script src="script.js"></script>
+<script>
+function loginUser() {
+    // Get values from the form
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+    
+    // Get saved registration data
+    let savedUsername = localStorage.getItem('reg_username');
+    let savedPassword = localStorage.getItem('reg_password');
+    
+    // Debug: See what's saved (check console with F12)
+    console.log("=== LOGIN DEBUG ===");
+    console.log("You entered:", username, password);
+    console.log("Saved username:", savedUsername);
+    console.log("Saved password:", savedPassword);
+    
+    // Check if any account exists
+    if (!savedUsername) {
+        alert("❌ No account found! Please register first.");
+        window.location.href = "register.html";
+        return false;
+    }
+    
+    // Check if credentials match
+    if (username === savedUsername && password === savedPassword) {
+        alert("✅ Login successful! Welcome " + username);
+        // You can redirect to your dashboard/homepage
+        // window.location.href = "dashboard.html";
+        return true;
+    } else {
+        alert("❌ Wrong username or password!\n\nTry:\nUsername: " + savedUsername + "\nPassword: " + savedPassword);
+        return false;
+    }
+}
+</script>
 
 </body>
 </html>
