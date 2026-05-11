@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSync - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- WIP BANNER -->
+<div class="wip-banner">
+    🚧 RoomSync Login System (Prototype Version) 🚧
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+    <h1>RoomSync</h1>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="search.html">Search</a>
+    </div>
+</nav>
+
+<!-- LOGIN SECTION -->
+<section class="auth-container">
+
+    <h2>Login</h2>
+    <p>Welcome back! Please enter your details to continue.</p>
+
+    <form onsubmit="return loginUser()">
+
+        <input type="text" id="username" placeholder="Username" required>
+        <br><br>
+
+        <input type="password" id="password" placeholder="Password" required>
+        <br><br>
+
+        <button type="submit" class="btn">Login</button>
+
+    </form>
+
+    <p class="small-text">
+        Don’t have an account? <a href="register.html">Register here</a>
+    </p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>RoomSync © 2026 | Web Development Project</p>
+</footer>
+
+<!-- SCRIPT -->
+<script src="script.js"></script>
+
+</body>
+</html>
